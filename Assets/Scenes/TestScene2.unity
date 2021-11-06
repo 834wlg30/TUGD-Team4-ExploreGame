@@ -453,7 +453,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 964400891}
-  m_LocalRotation: {x: 0.4272031, y: 0.30996162, z: -0.15869518, w: 0.8344083}
+  m_LocalRotation: {x: 0.42720306, y: 0.30996162, z: -0.15869516, w: 0.8344083}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -511,7 +511,7 @@ MonoBehaviour:
       m_Length: 1
       m_Item0:
         transform: {fileID: 1621063657}
-        weight: 1
+        weight: 0.6
       m_Item1:
         transform: {fileID: 0}
         weight: 0
@@ -598,7 +598,7 @@ MonoBehaviour:
       m_Length: 1
       m_Item0:
         transform: {fileID: 1621063657}
-        weight: 0.3
+        weight: 0.4
       m_Item1:
         transform: {fileID: 0}
         weight: 0
@@ -870,7 +870,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1135920852}
-  m_LocalRotation: {x: 0.44432327, y: 0.30662236, z: -0.16505492, w: 0.825419}
+  m_LocalRotation: {x: 0.44432327, y: 0.30662233, z: -0.16505489, w: 0.825419}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1776,7 +1776,7 @@ MonoBehaviour:
   speed: 5
   lookTarget: {fileID: 1621063657}
   lookTargetDistance: 10
-  turnSmoothTime: 0.1
+  turnSmoothTime: 0.3
 --- !u!143 &2062687746
 CharacterController:
   m_ObjectHideFlags: 0
