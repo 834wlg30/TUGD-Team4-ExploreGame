@@ -9,11 +9,19 @@ public class ThirdPersonMoveScript : MonoBehaviour
     public Transform cam;
     public float speed;
     public Transform lookTarget;
+    public Transform shoulderTarget;
+    public float camSpeed;
+    public Vector3 camTurn = new Vector3(0, 0, 0);
     public float lookTargetDistance;
 
     public float turnSmoothTime;
     float turnSmoothVelocity;
 
+
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+    }
     // Update is called once per frame
     void Update()
     {
@@ -39,6 +47,19 @@ public class ThirdPersonMoveScript : MonoBehaviour
 
     private void FixedUpdate()
     {
+        camTurn += new Vector3(-Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"), 0) * Time.deltaTime * camSpeed;
+        camTurn.x = Mathf.Clamp(camTurn.x, -85, 85);
+
         lookTarget.transform.position = transform.position + Camera.main.transform.forward * lookTargetDistance; //Camera.main.transform.position + Camera.main.transform.forward * 5;
+
+        shoulderTarget.rotation = Quaternion.Euler(camTurn);
+
+        //shoulderTarget.Rotate(new Vector3(Input.GetAxis("Mouse Y"), 0, 0f) * Time.deltaTime * camSpeed);
+        //shoulderTarget.Rotate(new Vector3(0, Input.GetAxis("Mouse X"), 0) * Time.deltaTime * camSpeed);
+
+        //Vector3 angle = shoulderTarget.rotation.eulerAngles + new Vector3(-Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"), 0f) * Time.deltaTime * camSpeed;
+        //angle = new Vector3(angle.x, angle.y, 0);
+        //shoulderTarget.rotation = Quaternion.Euler(angle);
+        //shoulderTarget.LookAt(lookTarget);
     }
 }
