@@ -8,6 +8,8 @@ public class ThirdPersonMoveScript : MonoBehaviour
 
     public Transform cam;
     public float speed;
+    public Transform lookTarget;
+    public float lookTargetDistance;
 
     public float turnSmoothTime;
     float turnSmoothVelocity;
@@ -28,5 +30,15 @@ public class ThirdPersonMoveScript : MonoBehaviour
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * dir; //Vector3.forward;
             charController.Move(moveDir.normalized * speed * Time.deltaTime);
         }
+
+        //RaycastHit hit;
+        //Ray forwardRay = new Ray(transform.position, Vector3.forward);
+
+        //if (Physics.Raycast(forwardRay, out hit, sightDistance))
+    }
+
+    private void FixedUpdate()
+    {
+        lookTarget.transform.position = transform.position + Camera.main.transform.forward * lookTargetDistance; //Camera.main.transform.position + Camera.main.transform.forward * 5;
     }
 }
