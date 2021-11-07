@@ -14,8 +14,15 @@ public class ThirdPersonMoveScript : MonoBehaviour
     public Vector3 camTurn = new Vector3(0, 0, 0);
     public float lookTargetDistance;
 
+    public Transform testGun;
+    public GameObject projectile;
+    public Transform spawnBulletPoint;
+
     public float turnSmoothTime;
     float turnSmoothVelocity;
+
+    [SerializeField] LayerMask aimColliderMask;
+    public Transform aimTargetTest;
 
 
     private void Start()
@@ -43,6 +50,8 @@ public class ThirdPersonMoveScript : MonoBehaviour
         //Ray forwardRay = new Ray(transform.position, Vector3.forward);
 
         //if (Physics.Raycast(forwardRay, out hit, sightDistance))
+
+        if (Input.GetMouseButtonDown(0)) Shoot();
     }
 
     private void FixedUpdate()
@@ -61,5 +70,30 @@ public class ThirdPersonMoveScript : MonoBehaviour
         //angle = new Vector3(angle.x, angle.y, 0);
         //shoulderTarget.rotation = Quaternion.Euler(angle);
         //shoulderTarget.LookAt(lookTarget);
+
+        ThirdPersonController();
+    }
+
+    public void ThirdPersonController()
+    {
+        Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
+        Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
+        if (Physics.Raycast(ray, out RaycastHit hit, 4000f, aimColliderMask))
+        {
+            aimTargetTest.position = hit.point;
+            testGun.LookAt(hit.point);
+        }
+        else
+        {
+            aimTargetTest.position = lookTarget.position;
+            testGun.LookAt(lookTarget);
+        }
+    }
+
+    public void Shoot()
+    {
+        Vector3 aimDir = (aimTargetTest.position - testGun.position).normalized;
+        GameObject bulletClone = Instantiate(projectile, spawnBulletPoint.position, Quaternion.LookRotation(aimDir, Vector3.up));
+
     }
 }
