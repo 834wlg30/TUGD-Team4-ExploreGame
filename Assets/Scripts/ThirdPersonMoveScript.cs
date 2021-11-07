@@ -8,6 +8,15 @@ public class ThirdPersonMoveScript : MonoBehaviour
 
     public Transform cam;
     public float speed;
+    public float sprintFactor;
+    public Vector3 currentMovement;
+
+    public float verticalVelocity;
+    public float initialJumpVelocity;
+    public float maxJumpHeight;
+    public float maxJumpTime;
+    public float gravity;
+
     public Transform lookTarget;
     public Transform shoulderTarget;
     public float camSpeed;
@@ -17,6 +26,7 @@ public class ThirdPersonMoveScript : MonoBehaviour
     public Transform testGun;
     public GameObject projectile;
     public Transform spawnBulletPoint;
+    public GameObject gunEffects;
 
     public float turnSmoothTime;
     float turnSmoothVelocity;
@@ -28,6 +38,11 @@ public class ThirdPersonMoveScript : MonoBehaviour
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    private void Awake()
+    {
+        setupJumpVariables();
     }
     // Update is called once per frame
     void Update()
@@ -43,8 +58,15 @@ public class ThirdPersonMoveScript : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * dir; //Vector3.forward;
-            charController.Move(moveDir.normalized * speed * Time.deltaTime);
+            //currentMovement.x = moveDir.x;
+            //currentMovement.z = moveDir.z;
+
+            float sprint;
+            if (Input.GetKey(KeyCode.LeftShift)) sprint = sprintFactor;
+            else sprint = 1;
+            charController.Move(moveDir.normalized * speed * sprint * Time.deltaTime);
         }
+        //charController.Move(currentMovement * Time.deltaTime);
 
         //RaycastHit hit;
         //Ray forwardRay = new Ray(transform.position, Vector3.forward);
@@ -52,6 +74,8 @@ public class ThirdPersonMoveScript : MonoBehaviour
         //if (Physics.Raycast(forwardRay, out hit, sightDistance))
 
         if (Input.GetMouseButtonDown(0)) Shoot();
+        HandleGravity();
+        Jump();
     }
 
     private void FixedUpdate()
@@ -74,6 +98,54 @@ public class ThirdPersonMoveScript : MonoBehaviour
         ThirdPersonController();
     }
 
+    public void setupJumpVariables()
+    {
+        float timeToApex = maxJumpTime / 2;
+        gravity = (-2 * maxJumpHeight) / Mathf.Pow(timeToApex, 2);
+        initialJumpVelocity = (2 * maxJumpHeight) / timeToApex;
+    }
+    public void Jump()
+    {
+        //if (!charController.isGrounded)
+        //{
+            //verticalVelocity -= gravity * Time.deltaTime;
+        //}
+        //else
+        //{
+            //verticalVelocity = -1f;
+        //}
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (charController.isGrounded)
+            {
+                Debug.Log("Jump!!!");
+                //transform.GetComponent<Rigidbody>().velocity = Vector3.up * jumpForce;
+                verticalVelocity = initialJumpVelocity;
+            }
+            else
+            {
+                Debug.Log("NO GROUNDED!! NO JUMP U BAD!!");
+            }
+        }
+
+        //charController.Move(new Vector3 (0,verticalVelocity,0) * Time.deltaTime);
+    }
+
+    public void HandleGravity()
+    {
+        if (!charController.isGrounded)
+        {
+            verticalVelocity += gravity * Time.deltaTime;
+        }
+        else
+        {
+            verticalVelocity = -1;
+        }
+
+        //currentMovement.y = verticalVelocity;
+        charController.Move(new Vector3(0, verticalVelocity, 0) * Time.deltaTime);
+    }
+
     public void ThirdPersonController()
     {
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
@@ -94,6 +166,7 @@ public class ThirdPersonMoveScript : MonoBehaviour
     {
         Vector3 aimDir = (aimTargetTest.position - testGun.position).normalized;
         GameObject bulletClone = Instantiate(projectile, spawnBulletPoint.position, Quaternion.LookRotation(aimDir, Vector3.up));
-
+        GameObject gunEffectsClone = Instantiate(gunEffects, spawnBulletPoint.position, Quaternion.LookRotation(aimDir, Vector3.up));
+        Destroy(gunEffectsClone, 5f);
     }
 }
