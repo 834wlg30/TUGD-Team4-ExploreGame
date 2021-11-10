@@ -34,10 +34,15 @@ public class ThirdPersonMoveScript : MonoBehaviour
     [SerializeField] LayerMask aimColliderMask;
     public Transform aimTargetTest;
 
+    MeshSockets sockets;
 
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+
+        sockets = GetComponent<MeshSockets>();
+        //sockets.Attach(testGun.transform, MeshSockets.SocketId.RightHand);
+
     }
 
     private void Awake()
@@ -54,10 +59,12 @@ public class ThirdPersonMoveScript : MonoBehaviour
         if(dir.magnitude >= 0.1)
         {
             float targetAngle = Camera.main.transform.eulerAngles.y;
+            //targetAngle = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg + cam.eulerAngles.y; //This is one of two things that makes the character keep rotated toward where he is walking rather than where he is looking
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
-            Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * dir; //Vector3.forward;
+
+            Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * dir; // Vector3.forward; //Using Vector3.forward instead is one of two things that makes the character keep rotated toward where he is walking rather than where he is looking
             //currentMovement.x = moveDir.x;
             //currentMovement.z = moveDir.z;
 
