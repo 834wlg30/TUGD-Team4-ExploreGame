@@ -2,15 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeAreAllSinners : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
-    // God is calling your name
+    // Start is called before the first frame update
     void Start()
     {
         
     }
 
-    // Will you answer?
+    // Update is called once per frame
     void Update()
     {
         

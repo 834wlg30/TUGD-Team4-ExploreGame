@@ -1,4 +1,4 @@
-//Interface for basic enemy FSM states
+//Interface for Chick States
 
 public interface IFSMState
 {

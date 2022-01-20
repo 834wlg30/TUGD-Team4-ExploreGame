@@ -1,5 +1,3 @@
-//FSM state controller
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,7 +27,7 @@ public class FSM : MonoBehaviour
         FSMStateType tranState = currState.shouldTransitionToState();
 
         //transition to new state if necessary
-        if (tranState != currState.stateName)
+        if(tranState != currState.stateName)
         {
             transitionToState(tranState);
         }
@@ -47,9 +45,9 @@ public class FSM : MonoBehaviour
     IFSMState getState(FSMStateType s)
     {
         //if state exists
-        foreach (var state in states)
+        foreach(var state in states)
         {
-            if (state.stateName == s)
+            if(state.stateName == s)
             {
                 return state;
             }

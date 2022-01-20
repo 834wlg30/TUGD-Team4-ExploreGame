@@ -12,19 +12,21 @@ public class PatrolState : MonoBehaviour, IFSMState
     public float mSpeed = 1.5f;
     public float accel = 2.0f;
     public float aSpeed = 360.0f;
-    public string animAlertParam = "Alert";
+    public string animRunParam = "Run";
 
     public FSMStateType stateName { get { return FSMStateType.Patrol; } }
 
     private NavMeshAgent agent;
     private Sightline sightline;
     private Animator animator;
+    [SerializeField] private GameManager gm;
 
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         sightline = GetComponent<Sightline>();
         animator = GetComponent<Animator>();
+
     }
 
     public void onEnter()
@@ -34,7 +36,9 @@ public class PatrolState : MonoBehaviour, IFSMState
         agent.acceleration = accel;
         agent.angularSpeed = aSpeed;
 
-        animator.SetBool(animAlertParam, false);
+        gm.playerDetected = false;
+
+        animator.SetBool(animRunParam, false);
     }
 
     public void onExit()
@@ -49,9 +53,11 @@ public class PatrolState : MonoBehaviour, IFSMState
 
     public FSMStateType shouldTransitionToState()
     {
+        
         if (sightline.targetInSight)
         {
-            return FSMStateType.Aim;
+            Debug.Log("Checking for transition");
+            return FSMStateType.Chase;
         }
 
         return stateName;
@@ -60,12 +66,12 @@ public class PatrolState : MonoBehaviour, IFSMState
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 }
